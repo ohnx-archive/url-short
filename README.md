@@ -2,7 +2,11 @@
 
 A simple URL shortener written in python using the Flask and redis-py libraries.
 
+It can keep track of clicks as well.
+
 It looks not too bad. I spent around 1 hour writing the backend, and probably 5 hours working on the front-end, so you can tell where the primary emphasis of this project is.
+
+Also, GitHub thinks that this project is in HTML because there's so much javascript everywhere to make things look nice.
 
 ## depend
 
@@ -29,3 +33,18 @@ Line 80: Open to public?
 `python app.py`
 
 That's it!
+
+## api
+
+Yes, there is an API with this.
+
+Please refer to the api docs on the index page.
+
+## contribute
+
+whoa, you want to contribute?!? :suprised:
+
+feel free to do whatever you want, as long as it isn't adding jQuery (I tried to NOT use jQuery on this project)
+
+
+
