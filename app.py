@@ -5,7 +5,7 @@ import random
 
 app = Flask(__name__)
 # redis config
-r = redis.StrictRedis(host='europa.stsosz.io', port=6380, db=0)
+r = redis.StrictRedis(host='.', port=6380, db=0)
 p = re.compile("^(https?\:\/\/)?.*\..*\/.*$")
 # key generation
 # character set
