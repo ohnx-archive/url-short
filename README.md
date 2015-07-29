@@ -6,7 +6,11 @@ It can keep track of clicks as well.
 
 It looks not too bad. I spent around 1 hour writing the backend, and probably 5 hours working on the front-end, so you can tell where the primary emphasis of this project is.
 
-Also, GitHub thinks that this project is in HTML because there's so much javascript everywhere to make things look nice.
+Also, sorry for the random `python.py` file. GitHub thinks that this project is in HTML without it because there's so much javascript everywhere to make things look nice.
+
+## download
+
+run `git clone https://github.com/ohnx/url-short.git` to get the source. I only push runnable code.
 
 ## depend
 
@@ -42,9 +46,8 @@ Please refer to the api docs on the index page.
 
 ## contribute
 
-whoa, you want to contribute?!? :suprised:
+whoa, you want to contribute?!?
 
-feel free to do whatever you want, as long as it isn't adding jQuery (I tried to NOT use jQuery on this project)
+feel free to do whatever you want. MIT License.
 
-
-
+Please don't bother adding jQuery though.
