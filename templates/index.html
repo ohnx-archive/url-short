@@ -1,24 +1,26 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>{{ title }}</title>
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+<!--<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">-->
 <link rel="stylesheet" href="static/css/style.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
+<!--
 <div class="header">
     <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
         <a class="pure-menu-heading" href="">{{ title }}</a>
         <ul class="pure-menu-list">
-			<!-- Great naming scheme for these links... -->
+			<!-- Great naming scheme for these links... --><!--
             <li id="maine" class="pure-menu-item"><a href="#main" id="mainlink" class="pure-menu-link">Main</a></li>
             <li id="statz" class="pure-menu-item"><a href="#stats" class="pure-menu-link">URL Stats</a></li>
             <li id="aypei" class="pure-menu-item"><a href="#api" class="pure-menu-link">API</a></li>
         </ul>
     </div>
-</div>
+</div>-->
 
 <section class="splash-container" name="main">
     <div class="splash">
@@ -52,9 +54,7 @@
             </div>
             <br />
             <h3 id="sfor"></h3>
-            <div id="statsresults">
-                
-            </div>
+            <div id="statsresults"></div>
         </div>
     </div>
 
@@ -64,14 +64,14 @@
             If you're into that sort of thing, a JSON API is available.<br />
             <h3>Shortening a URL via the API</h3>
             To shorten a new URL, send a GET request to <code>/json/add</code> and specify the url, and key if needed.<br />
-			It is optional to include "http://". However, there must be a slash after the domain in the url.<br />
-			For example, <code>google.com/</code> is okay, but not <code>http://google.com</code>.<br />
+			The protocol (http or https) is mandatory. Also, there must be a slash after the domain in the url.<br />
+			For example, <code>http://google.com/</code> is okay, but not <code>http://google.com</code>.<br />
             If any errors occur, the response object will look something like this: <code>{"error":"&lt;error reason&gt;"}</code><br />
-            Otherwise, the response will be something along the lines of this: <code>{"key":"&lt;key for url&gt;","url":"<long url>","hits":"0"}</code><br />
+            Otherwise, the response will be something along the lines of this: <code>{"key":"&lt;key for url&gt;","url":"&lt;long url&gt;","hits":"0"}</code><br />
 			<h3>Get the stats of a URL via the API</h3>
             Send a GET request to <code>/json/stats/&lt;key&gt;</code>, where &lt;key&gt; is the key of the url you want to get stats on.<br />
             If any errors occur, the response object will look something like this: <code>{"error":"&lt;error reason&gt;"}</code><br />
-            Otherwise, the response will be something along the lines of this: <code>{"key":"&lt;key for url&gt;","url":"<long url>","hits":"&lt;number of hits&gt;"}</code><br />
+            Otherwise, the response will be something along the lines of this: <code>{"key":"&lt;key for url&gt;","url":"&lt;long url&gt;","hits":"&lt;number of hits&gt;"}</code><br />
         </div>
     </div>
 
@@ -89,6 +89,9 @@ var currColor = "#fff";
 function shortURL() {
     if(!isValidURL) {
         return;
+    }
+    if(!(/^https?\:\/\/.*\..*\/.*$/.test(document.getElementById("url").value))) {
+        document.getElementById("url").value = "http://" + document.getElementById("url").value;
     }
 	isValidURL = false;
     // Create a new request object
@@ -243,11 +246,11 @@ document.getElementById("custkey").addEventListener('paste', validURL);
 document.getElementById("custkey").addEventListener('propertychange', validURL);
 document.getElementById("url").addEventListener('focus', focusBar);
 document.getElementById("url").addEventListener('blur', blurBar);
-document.getElementById("mainlink").addEventListener('click', gototop);
-document.getElementById("mainlink").addEventListener('touchstart', gototop);
 document.getElementById("statsbtn").addEventListener('click', statsURL);
 document.getElementById("statsbtn").addEventListener('touchstart', statsURL);
 document.addEventListener("keydown", keyPressed, false);
+document.getElementById("mainlink").addEventListener('click', gototop);
+document.getElementById("mainlink").addEventListener('touchstart', gototop);
 
 // Add the site location
 document.getElementById("siteloc").innerHTML = window.location.host+'/';

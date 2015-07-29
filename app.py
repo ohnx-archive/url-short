@@ -5,8 +5,8 @@ import random
 
 app = Flask(__name__)
 # redis config
-r = redis.StrictRedis(host='.', port=6380, db=0)
-p = re.compile("^(https?\:\/\/)?.*\..*\/.*$")
+r = redis.StrictRedis(host='europa.stsosz.io', port=6380, db=0)
+ps = re.compile("^https?\:\/\/.*\..*\/.*$")
 # key generation
 # character set
 kc = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -56,7 +56,7 @@ def addjson():
     # check if key exists
     if not r.get('key:'+key) is None:
         return jresp("{\"error\":\"key already exists\"}", 400)
-    if p.match(url):
+    if ps.match(url):
         r.set('key:'+key, url)
         r.set('hit:'+key,0)
         return jresp("{\"key\":\""+key+"\",\"url\":\""+url+"\",\"hits\":\"0\"}")
