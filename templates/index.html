@@ -2,26 +2,12 @@
 <html lang="en">
 <head>
 <title>{{ title }}</title>
-<!--<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">-->
 <link rel="stylesheet" href="static/css/style.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
-<!--
-<div class="header">
-    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" href="">{{ title }}</a>
-        <ul class="pure-menu-list">
-			<!-- Great naming scheme for these links... --><!--
-            <li id="maine" class="pure-menu-item"><a href="#main" id="mainlink" class="pure-menu-link">Main</a></li>
-            <li id="statz" class="pure-menu-item"><a href="#stats" class="pure-menu-link">URL Stats</a></li>
-            <li id="aypei" class="pure-menu-item"><a href="#api" class="pure-menu-link">API</a></li>
-        </ul>
-    </div>
-</div>-->
-
+<!-- SECTION HTML-->
 <section class="splash-container" name="main">
     <div class="splash">
         <h1>URL</h1><h2>SHORTENER</h2><br /><br />
@@ -33,9 +19,9 @@
         </div>
 		<div id="error" class="splash-subhead"></div>
         <p class="splash-subhead">
-            Have a link that's too long? Make it <b>shrtr</b>.<br />
+            Have a link that's just too long? Make it <b>shrtr</b>.<br />
             Paste your link in the big box above and click the link icon.<br />
-			Boom! A link that's shorter and much easier to share.<br />
+            Poof! A link that's shorter, easier to remember and much easier to share.<br />
             If you want, you can also specify a custom URL.<br />
         </p>
     </div>
@@ -44,9 +30,9 @@
 <section class="content-wrapper">
     <div class="content alt" id="stats" name="stats">
         <div class="is-center"><h1 class="is-center">URL</h1><h2>STATS</h2></div><br />
-		<div class="content-actual">
+        <div class="content-actual">
             Want to check where a link goes?<br />
-			Curious about how many clicks a link has gotten?<br />
+            Curious about how many clicks a link has gotten?<br />
             Paste the key for the link below and click "Get stats" to see where a link leads to and how many clicks it has received.<br />
             <div class="underbar">
                 Key: <input class="splash-putin" type="text" id="key">
@@ -64,11 +50,11 @@
             If you're into that sort of thing, a JSON API is available.<br />
             <h3>Shortening a URL via the API</h3>
             To shorten a new URL, send a GET request to <code>/json/add</code> and specify the url, and key if needed.<br />
-			The protocol (http or https) is mandatory. Also, there must be a slash after the domain in the url.<br />
-			For example, <code>http://google.com/</code> is okay, but not <code>http://google.com</code>.<br />
+            The protocol (http or https) is mandatory. Also, there must be a slash after the domain in the url.<br />
+            For example, <code>http://google.com/</code> is okay, but not <code>http://google.com</code>.<br />
             If any errors occur, the response object will look something like this: <code>{"error":"&lt;error reason&gt;"}</code><br />
             Otherwise, the response will be something along the lines of this: <code>{"key":"&lt;key for url&gt;","url":"&lt;long url&gt;","hits":"0"}</code><br />
-			<h3>Get the stats of a URL via the API</h3>
+            <h3>Get the stats of a URL via the API</h3>
             Send a GET request to <code>/json/stats/&lt;key&gt;</code>, where &lt;key&gt; is the key of the url you want to get stats on.<br />
             If any errors occur, the response object will look something like this: <code>{"error":"&lt;error reason&gt;"}</code><br />
             Otherwise, the response will be something along the lines of this: <code>{"key":"&lt;key for url&gt;","url":"&lt;long url&gt;","hits":"&lt;number of hits&gt;"}</code><br />
@@ -77,23 +63,26 @@
 
     <div class="footer is-center">
         Made with &#10084; by <a style="text-decoration:none;color:#fff;" href="https://ohnx.github.io/">ohnx</a>
-		<!-- Inline styling for the last bit <3 -->
+	<!-- Inline styling for the last bit <3 -->
     </div>
-
 </section>
+<!-- SECTION JS -->
 <script>
-// global vars
+/* GLOBAL VARS */
 var isValidURL = false;
 var currColor = "#fff";
 
+/* URL SHORTENER */
+//send request
 function shortURL() {
     if(!isValidURL) {
         return;
     }
     if(!(/^https?\:\/\/.*\..*\/.*$/.test(document.getElementById("url").value))) {
+    	//add http if it isnt there
         document.getElementById("url").value = "http://" + document.getElementById("url").value;
     }
-	isValidURL = false;
+    isValidURL = false;
     // Create a new request object
     var request = new XMLHttpRequest();
     request.onload = shortRet;
@@ -111,25 +100,30 @@ function shortURL() {
 function shortRet() {
     var ret = JSON.parse(this.responseText);
     if(this.status == 400) {
+    	// error
         document.getElementById("error").style.color = "#FF0000";
         document.getElementById("urlbox").style.border = "2px solid #FF0000";
-		document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #FF0000";
-		currColor = "#FF0000";
+        document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #FF0000";
+        currColor = "#FF0000";
         document.getElementById("error").innerHTML = ret.error;
     } else {
+    	// itwerked!
         document.getElementById("url").value = window.location.host+'/'+ret.key;
         document.getElementById("urlbox").style.border = "2px solid #00FF00";
-		document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #00FF00";
-		currColor = "#00FF00";
-		document.getElementById("urlbox").focus();
-		document.getElementById("urlbox").select();
-		document.getElementById("urlbox").setSelectionRange(0, document.getElementById("urlbox").length);
+        document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #00FF00";
+        currColor = "#00FF00";
+        // try to focus the bar
+        // this doesn't really work atm...
+        document.getElementById("urlbox").focus();
+        document.getElementById("urlbox").select();
+        document.getElementById("urlbox").setSelectionRange(0, document.getElementById("urlbox").length);
         document.getElementById("custkey").value = "";
         document.getElementById("error").style.color = "#00FF00";
         document.getElementById("error").innerHTML = "Successfully shortened URL!";
     }
 }
 
+/* URL STATS */
 // html escape so that links wont make issues.
 // houndini!
 function htmlescape(houndini) {
@@ -153,9 +147,11 @@ function statsURL() {
 function statsRet() {
     var ret = JSON.parse(this.responseText);
     if(this.status == 400) {
+    	//didn't work (invalid key)
         document.getElementById("statsresults").style.color = "#FF0000";
         document.getElementById("statsresults").innerHTML = ret.error;
     } else {
+    	// outpout stats
         document.getElementById("statsresults").style.color = "#000";
         document.getElementById("statsresults").innerHTML = "Stats for <b>"+htmlescape(ret.key)+"</b>:<br />Recieved <b>"+ret.hits+"</b> click(s)<br />Links to: <b><a href=\""+ret.url+"\">"+htmlescape(ret.url)+"</a></b>";
     }
@@ -193,6 +189,7 @@ function gototop() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
+/* BAR AESTHETICS */
 // focus and unfocus bar
 function focusBar() {
 	document.getElementById("urlbox").style.backgroundColor = "rgba(255,255,255,0.5)";
@@ -208,9 +205,7 @@ function blurBar() {
 
 blurBar();
 
-// Checking for enter button pressed.
-// When it is, check if the stats input is onscreen. If it is, then assume stats.
-// Otherwise, assume url.
+/* ENTER KEY CARP */
 function isElementInViewport (el) {
     var rect = el.getBoundingClientRect();
     return (
@@ -221,6 +216,9 @@ function isElementInViewport (el) {
     );
 }
 
+// Checking for enter button pressed.
+// When it is, check if the stats input is onscreen. If it is, then assume stats.
+// Otherwise, assume url.
 function keyPressed(e) {
 	var keyCode = e.keyCode;
 	if(keyCode==13) {
@@ -230,10 +228,10 @@ function keyPressed(e) {
 			shortURL();
 		}
 	}
-}
+},
 
-// Event handlers
-// Note that I have click and touchstart here. Touch friendly?
+/* EVENT HANDLERS */
+// Note that I have click and touchstart here. Touch friendly? :)
 document.getElementById("shortbtn").addEventListener('click', shortURL);
 document.getElementById("shortbtn").addEventListener('touchstart', shortURL);
 document.getElementById("url").addEventListener('keyup', validURL);
@@ -249,12 +247,9 @@ document.getElementById("url").addEventListener('blur', blurBar);
 document.getElementById("statsbtn").addEventListener('click', statsURL);
 document.getElementById("statsbtn").addEventListener('touchstart', statsURL);
 document.addEventListener("keydown", keyPressed, false);
-document.getElementById("mainlink").addEventListener('click', gototop);
-document.getElementById("mainlink").addEventListener('touchstart', gototop);
 
 // Add the site location
 document.getElementById("siteloc").innerHTML = window.location.host+'/';
-
 </script>
 </body>
 </html>
