@@ -62,8 +62,8 @@
     </div>
 
     <div class="footer is-center">
-        Made with &#10084; by <a style="text-decoration:none;color:#fff;" href="https://ohnx.github.io/">ohnx</a>
 	<!-- Inline styling for the last bit <3 -->
+        Made with &#10084; by <a style="text-decoration:none;color:#fff;" href="https://ohnx.github.io/">ohnx</a>
     </div>
 </section>
 <!-- SECTION JS -->
@@ -75,118 +75,117 @@ var currColor = "#fff";
 /* URL SHORTENER */
 //send request
 function shortURL() {
-    if(!isValidURL) {
-        return;
-    }
-    if(!(/^https?\:\/\/.*\..*\/.*$/.test(document.getElementById("url").value))) {
-    	//add http if it isnt there
-        document.getElementById("url").value = "http://" + document.getElementById("url").value;
-    }
-    isValidURL = false;
-    // Create a new request object
-    var request = new XMLHttpRequest();
-    request.onload = shortRet;
-    var url = document.getElementById('url').value
-    if(!document.getElementById('custkey').value=="") {
-        url = url+'&key='+document.getElementById('custkey').value
-    }
-    // Initialize a request
-    request.open('get', '/json/add?url='+url, true);
-    // Send it
-    request.send();
+        if(!isValidURL) {
+                return;
+        }
+        if(!(/^https?\:\/\/.*\..*\/.*$/.test(document.getElementById("url").value))) {
+                //add http if it isnt there
+                document.getElementById("url").value = "http://" + document.getElementById("url").value;
+        }
+        isValidURL = false;
+        // Create a new request object
+        var request = new XMLHttpRequest();
+        request.onload = shortRet;
+        var url = document.getElementById('url').value
+        if(!document.getElementById('custkey').value=="") {
+                url = url+'&key='+document.getElementById('custkey').value
+        }
+        // Initialize a request
+        request.open('get', '/json/add?url='+url, true);
+        // Send it
+        request.send();
 }
 
 // Called after request
 function shortRet() {
-    var ret = JSON.parse(this.responseText);
-    if(this.status == 400) {
-    	// error
-        document.getElementById("error").style.color = "#FF0000";
-        document.getElementById("urlbox").style.border = "2px solid #FF0000";
-        document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #FF0000";
-        currColor = "#FF0000";
-        document.getElementById("error").innerHTML = ret.error;
-    } else {
-    	// itwerked!
-        document.getElementById("url").value = window.location.host+'/'+ret.key;
-        document.getElementById("urlbox").style.border = "2px solid #00FF00";
-        document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #00FF00";
-        currColor = "#00FF00";
-        // try to focus the bar
-        // this doesn't really work atm...
-        document.getElementById("urlbox").focus();
-        document.getElementById("urlbox").select();
-        document.getElementById("urlbox").setSelectionRange(0, document.getElementById("urlbox").length);
-        document.getElementById("custkey").value = "";
-        document.getElementById("error").style.color = "#00FF00";
-        document.getElementById("error").innerHTML = "Successfully shortened URL!";
-    }
+        var ret = JSON.parse(this.responseText);
+        if(this.status == 400) {
+                // error
+                document.getElementById("error").style.color = "#FF0000";
+                document.getElementById("urlbox").style.border = "2px solid #FF0000";
+                document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #FF0000";
+                currColor = "#FF0000";
+                document.getElementById("error").innerHTML = ret.error;
+        } else {
+                // itwerked!
+                document.getElementById("url").value = window.location.host+'/'+ret.key;
+                document.getElementById("urlbox").style.border = "2px solid #00FF00";
+                document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #00FF00";
+                currColor = "#00FF00";
+                // try to focus the bar
+                // this doesn't really work atm...
+                document.getElementById("urlbox").focus();
+                document.getElementById("urlbox").select();
+                document.getElementById("custkey").value = "";
+                document.getElementById("error").style.color = "#00FF00";
+                document.getElementById("error").innerHTML = "Successfully shortened URL!";
+        }
 }
 
 /* URL STATS */
 // html escape so that links wont make issues.
-// houndini!
-function htmlescape(houndini) {
-    return houndini.replace(/[\u00A0-\u9999<>\&]/gim, function(i) { return '&#'+i.charCodeAt(0)+';'; });
+// houdini!
+function htmlescape(houdini) {
+        return houdini.replace(/[\u00A0-\u9999<>\&]/gim, function(i) { return '&#'+i.charCodeAt(0)+';'; });
 }
 
 // send stats request
 function statsURL() {
-    // Create a new request object
-    var request = new XMLHttpRequest();
-    request.onload = statsRet;
-    var key = document.getElementById('key').value
-    document.getElementById("sfor").innerHTML = "Stats for "+htmlescape(key);
-    // Initialize a request
-    request.open('get', '/json/stats/'+key, true);
-    // Send it
-    request.send();
+        // Create a new request object
+        var request = new XMLHttpRequest();
+        request.onload = statsRet;
+        var key = document.getElementById('key').value
+        document.getElementById("sfor").innerHTML = "Stats for "+htmlescape(key);
+        // Initialize a request
+        request.open('get', '/json/stats/'+key, true);
+        // Send it
+        request.send();
 }
 
 // Return function for stats
 function statsRet() {
-    var ret = JSON.parse(this.responseText);
-    if(this.status == 400) {
-    	//didn't work (invalid key)
-        document.getElementById("statsresults").style.color = "#FF0000";
-        document.getElementById("statsresults").innerHTML = ret.error;
-    } else {
-    	// outpout stats
-        document.getElementById("statsresults").style.color = "#000";
-        document.getElementById("statsresults").innerHTML = "Stats for <b>"+htmlescape(ret.key)+"</b>:<br />Recieved <b>"+ret.hits+"</b> click(s)<br />Links to: <b><a href=\""+ret.url+"\">"+htmlescape(ret.url)+"</a></b>";
-    }
+        var ret = JSON.parse(this.responseText);
+        if(this.status == 400) {
+                //didn't work (invalid key)
+                document.getElementById("statsresults").style.color = "#FF0000";
+                document.getElementById("statsresults").innerHTML = ret.error;
+        } else {
+                // output stats
+                document.getElementById("statsresults").style.color = "#000";
+                document.getElementById("statsresults").innerHTML = "Stats for <b>"+htmlescape(ret.key)+"</b>:<br />Recieved <b>"+ret.hits+"</b> click(s)<br />Links to: <b><a href=\""+ret.url+"\">"+htmlescape(ret.url)+"</a></b>";
+        }
 }
 
 // Check if entered textbox is a valid url
 function validURL() {
-    if(document.getElementById('url').value=="") {
-        document.getElementById("urlbox").style.border = "2px solid #fff";
-		document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #fff";
-        document.getElementById("error").style.color = "#00FF00";
-		currColor = "#fff";
-        document.getElementById("error").innerHTML = "";
-        isValidURL = false;
-    }
-    if(/^(https?\:\/\/)?.*\..*\/.*$/.test(document.getElementById("url").value)) {
-        document.getElementById("urlbox").style.border = "2px solid #fff";
-		document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #fff";
-        document.getElementById("error").style.color = "#00FF00";
-		currColor = "#fff";
-        document.getElementById("error").innerHTML = "";
-        isValidURL = true;
-    } else {
-        document.getElementById("urlbox").style.border = "2px solid #FF0000";
-		document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #FF0000";
-		currColor = "#FF0000";
-        document.getElementById("error").style.color = "#FF0000";
-        document.getElementById("error").innerHTML = "The URL entered is invalid.";
-        isValidURL = false;
+        if(document.getElementById('url').value=="") {
+                document.getElementById("urlbox").style.border = "2px solid #fff";
+                document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #fff";
+                document.getElementById("error").style.color = "#00FF00";
+                currColor = "#fff";
+                document.getElementById("error").innerHTML = "";
+                isValidURL = false;
+        }
+        if(/^(https?\:\/\/)?.*\..*\/.*$/.test(document.getElementById("url").value)) {
+                document.getElementById("urlbox").style.border = "2px solid #fff";
+                document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #fff";
+                document.getElementById("error").style.color = "#00FF00";
+                currColor = "#fff";
+                document.getElementById("error").innerHTML = "";
+                isValidURL = true;
+        } else {
+                document.getElementById("urlbox").style.border = "2px solid #FF0000";
+                document.getElementById("urlbox").style.boxShadow = "0px 0px 5px #FF0000";
+                currColor = "#FF0000";
+                document.getElementById("error").style.color = "#FF0000";
+                document.getElementById("error").innerHTML = "The URL entered is invalid.";
+                isValidURL = false;
     }
 }
 
 // go to top for main, as anchors dont work.
 function gototop() {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 /* BAR AESTHETICS */
@@ -205,15 +204,14 @@ function blurBar() {
 
 blurBar();
 
-/* ENTER KEY CARP */
 function isElementInViewport (el) {
-    var rect = el.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
-    );
+        var rect = el.getBoundingClientRect();
+        return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+        );
 }
 
 // Checking for enter button pressed.
